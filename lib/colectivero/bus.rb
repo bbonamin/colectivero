@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 module Colectivero
 	class Bus
 		BUS_LINES = [	{:name => '101', :line_id => '1,2', :value => '101'},
@@ -39,22 +40,36 @@ module Colectivero
 									{:name => 'Linea de la Costa', :line_id => '65', :value => 'LC'},
 									{:name => 'Ronda del Centro', :line_id => '66', :value => 'RC'}	]
 
+		attr_reader :name, :line_id, :value
 		def initialize bus_name
-			bus = BUS_LINES.select { |bus| bus[:name] == name }
-			if bus
+			bus = BUS_LINES.select { |bus| bus[:name] == bus_name.to_s }.first
+			if bus.empty?
+				raise 'Nombre de colectivo no válido'
+			else
 				@name 		= bus[:name]
 				@line_id 	= bus[:line_id]
 				@value 		= bus[:value]
-			else
-				raise 'Nombre de colectivo no válido'
 			end
 		end
 
-		def list_all
+		def self.list_all
+			buses = []
 			BUS_LINES.each do |bus|
 				buses << bus[:name]
 			end
 			buses
+		end
+
+		def streets
+			agent = Mechanize.new
+			agent.get("http://www.etr.gov.ar/getData.php?accion=getCalle&idLinea=#{line_id}")
+			JSON(agent.page.content)
+		end
+
+		def intersections(street)
+			agent = Mechanize.new
+    	agent.get("http://www.etr.gov.ar/getData.php?accion=getInterseccion&idLinea=#{line_id}&idCalle=#{street['id']}")
+    	JSON(agent.page.content)
 		end
 	end
 end
