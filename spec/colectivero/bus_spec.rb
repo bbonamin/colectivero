@@ -1,12 +1,11 @@
 require 'spec_helper'
 
-describe Bus do
+describe 'Bus' do
 	before(:each) do
-		binding.pry
 		@bus = Colectivero::Bus.new('110')
 	end
 
-	it 'should be valid' do
-		@bus.should be_valid
+	it 'should have an id' do
+		@bus.line_id.should eq '11'
 	end
 end
