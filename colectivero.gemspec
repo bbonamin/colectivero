@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
   s.add_dependency('mechanize', '>= 1.0.0')
   s.add_dependency('json', '>= 1.6.6')
 
+  s.add_development_dependency 'rspec', '~> 2.9'
   s.rubyforge_project = "colectivero"
 
   s.files         = `git ls-files`.split("\n")
