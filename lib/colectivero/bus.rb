@@ -43,7 +43,7 @@ module Colectivero
 		attr_reader :name, :line_id, :value
 		def initialize bus_name
 			bus = BUS_LINES.select { |bus| bus[:name] == bus_name.to_s }.first
-			if bus.empty?
+			if bus.nil?
 				raise 'Nombre de colectivo no válido'
 			else
 				@name 		= bus[:name]
