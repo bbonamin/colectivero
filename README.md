@@ -6,14 +6,14 @@ Incluyo un par de ejemplos que detallan su uso.
 
 ##Instalación
 
-La instalación es muy simple:
+La instalación es muy simple:  
     gem install colectivero
 
-Y hacer un require:
+Y hacer un require:  
     require 'colectivero'
 
 ##Uso
-Para conocer la lista de todos los colectivos disponibles:
+Para conocer la lista de todos los colectivos disponibles:  
     Colectivero::Bus.list_all
 
 Seleccionando algún elemento de la lista, se puede instanciar un colectivo para poder conocer sus calles e intersecciones para obtener un número de parada:
@@ -25,11 +25,11 @@ Seleccionando algún elemento de la lista, se puede instanciar un colectivo para
 
     parada = Colectivero::BusStop.new(bus, calle, intersec)
 
-Y finalmente, para consultar la llegada:
+Y finalmente, para consultar la llegada:  
     llegada = Colectivero::Arrival.new bus, parada
     llegada.message # => "Linea 153R: 16min. 7434mts"
 
-Alternativamente, también se puede consultar la llegada mandando la parada como un entero o un string:
+Alternativamente, también se puede consultar la llegada mandando la parada como un entero o un string:  
     llegada = Colectivero::Arrival.new bus, '4186'
     llegada = Colectivero::Arrival.new bus, 4186
 
