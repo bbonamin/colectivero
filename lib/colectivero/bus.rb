@@ -40,7 +40,7 @@ module Colectivero
 									{:name => 'Linea de la Costa', :line_id => '65', :value => 'LC'},
 									{:name => 'Ronda del Centro', :line_id => '66', :value => 'RC'}	]
 
-		attr_reader :name, :line_id, :value
+		attr_reader :name, :line_id, :value, :streets
 		def initialize bus_name
 			bus = BUS_LINES.select { |bus| bus[:name] == bus_name.to_s }.first
 			if bus.nil?
@@ -49,6 +49,10 @@ module Colectivero
 				@name 		= bus[:name]
 				@line_id 	= bus[:line_id]
 				@value 		= bus[:value]
+
+				agent = Mechanize.new
+				agent.get("http://www.etr.gov.ar/getData.php?accion=getCalle&idLinea=#{line_id}")
+				@streets  = JSON(agent.page.content)
 			end
 		end
 
@@ -60,16 +64,17 @@ module Colectivero
 			buses
 		end
 
-		def streets
-			agent = Mechanize.new
-			agent.get("http://www.etr.gov.ar/getData.php?accion=getCalle&idLinea=#{line_id}")
-			JSON(agent.page.content)
-		end
-
 		def intersections(street)
 			agent = Mechanize.new
     	agent.get("http://www.etr.gov.ar/getData.php?accion=getInterseccion&idLinea=#{line_id}&idCalle=#{street['id']}")
     	JSON(agent.page.content)
 		end
+
+		# private
+		# 	def get_streets
+		# 		agent = Mechanize.new
+		# 		agent.get("http://www.etr.gov.ar/getData.php?accion=getCalle&idLinea=#{line_id}")
+		# 		JSON(agent.page.content)
+		# 	end
 	end
 end

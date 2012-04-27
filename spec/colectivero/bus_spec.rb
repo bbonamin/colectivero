@@ -19,10 +19,24 @@ describe 'Bus' do
 		end
 	end
 
-	context 'with a non valid name' do
-		it 'should be nil' do
-			@bus = Colectivero::Bus.new('xxx')
-			@bus.should be_nil
+	context 'with an invalid name' do
+		it 'should be raise an error' do
+			expect { Colectivero::Bus.new('xxx') }.should raise_error
 		end
+	end
+
+	it 'should have many streets' do
+		@bus.streets.should_not be_empty
+	end
+
+	context 'with a street as parameter' do
+		it 'should have many intersections' do
+			street = @bus.streets.first
+			@bus.intersections(street).should_not be_empty
+		end
+	end
+
+	it 'should raise an error when calling intersections without params' do
+		expect { @bus.intersections }.should raise_error
 	end
 end
